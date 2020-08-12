@@ -92,6 +92,10 @@ export default function (fork: Fork) {
     .bases("FlowType")
     .build();
 
+  def("SymbolTypeAnnotation")
+    .bases("FlowType")
+    .build();
+
   def("ThisTypeAnnotation")
     .bases("FlowType")
     .build();
@@ -392,4 +396,68 @@ export default function (fork: Fork) {
       null,
       def("TypeParameterInstantiation"),
     ), defaults["null"]);
+
+  def("EnumDeclaration")
+    .bases("Statement", "Declaration")
+    .build("id", "body")
+    .field("id", def("Identifier"))
+    .field("body", or(
+      def("EnumBooleanBody"),
+      def("EnumNumberBody"),
+      def("EnumStringBody"),
+      def("EnumSymbolBody"),
+    ));
+
+  def("EnumBody").bases("Flow");
+
+  def("EnumMember").bases("Flow");
+
+  def("EnumBooleanBody")
+    .bases("EnumBody")
+    .build("members", "explicit")
+    .field("explicit", Boolean)
+    .field("members", [def("EnumBooleanMember")]);
+
+  def("EnumNumberBody")
+    .bases("EnumBody")
+    .build("members", "explicit")
+    .field("explicit", Boolean)
+    .field("members", [def("EnumNumberMember")]);
+
+  def("EnumStringBody")
+    .bases("EnumBody")
+    .build("members", "explicit")
+    .field("explicit", Boolean)
+    .field("members", [or(
+      def("EnumStringMember"),
+      def("EnumDefaultedMember")
+    )]);
+
+  def("EnumSymbolBody")
+    .bases("EnumBody")
+    .build("members")
+    .field("members", [def("EnumDefaultedMember")]);
+
+  def("EnumBooleanMember")
+    .bases("EnumMember")
+    .build("id", "init")
+    .field("id", def("Identifier"))
+    .field("init", def("BooleanLiteral"));
+
+  def("EnumNumberMember")
+    .bases("EnumMember")
+    .build("id", "init")
+    .field("id", def("Identifier"))
+    .field("init", def("NumericLiteral"));
+
+  def("EnumStringMember")
+    .bases("EnumMember")
+    .build("id", "init")
+    .field("id", def("Identifier"))
+    .field("init", def("StringLiteral"));
+
+  def("EnumDefaultedMember")
+    .bases("EnumMember")
+    .build("id")
+    .field("id", def("Identifier"));
 };

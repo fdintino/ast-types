@@ -46,6 +46,11 @@ export { esprimaParse };
 // TODO Periodically revisit this as proposals advance.
 export function isEarlyStageProposalType(typeName: string) {
   switch (typeName) {
+    case "DecimalLiteral":
+    case "RecordExpression":
+    case "TupleExpression":
+    case "ImportAttribute":
+    case "V8IntrinsicIdentifier":
     // The pipeline operator syntax is still at Stage 1:
     // https://github.com/tc39/proposals#stage-1
     case "PipelineTopicExpression":

@@ -89,6 +89,8 @@ export interface Visitor<M = {}> {
   visitSpreadProperty?(this: Context & M, path: NodePath<namedTypes.SpreadProperty>): any;
   visitSpreadPropertyPattern?(this: Context & M, path: NodePath<namedTypes.SpreadPropertyPattern>): any;
   visitAwaitExpression?(this: Context & M, path: NodePath<namedTypes.AwaitExpression>): any;
+  visitOptionalMemberExpression?(this: Context & M, path: NodePath<namedTypes.OptionalMemberExpression>): any;
+  visitOptionalCallExpression?(this: Context & M, path: NodePath<namedTypes.OptionalCallExpression>): any;
   visitImportExpression?(this: Context & M, path: NodePath<namedTypes.ImportExpression>): any;
   visitJSXAttribute?(this: Context & M, path: NodePath<namedTypes.JSXAttribute>): any;
   visitJSXIdentifier?(this: Context & M, path: NodePath<namedTypes.JSXIdentifier>): any;
@@ -135,6 +137,7 @@ export interface Visitor<M = {}> {
   visitNullableTypeAnnotation?(this: Context & M, path: NodePath<namedTypes.NullableTypeAnnotation>): any;
   visitNullLiteralTypeAnnotation?(this: Context & M, path: NodePath<namedTypes.NullLiteralTypeAnnotation>): any;
   visitNullTypeAnnotation?(this: Context & M, path: NodePath<namedTypes.NullTypeAnnotation>): any;
+  visitSymbolTypeAnnotation?(this: Context & M, path: NodePath<namedTypes.SymbolTypeAnnotation>): any;
   visitThisTypeAnnotation?(this: Context & M, path: NodePath<namedTypes.ThisTypeAnnotation>): any;
   visitExistsTypeAnnotation?(this: Context & M, path: NodePath<namedTypes.ExistsTypeAnnotation>): any;
   visitExistentialTypeParam?(this: Context & M, path: NodePath<namedTypes.ExistentialTypeParam>): any;
@@ -177,6 +180,20 @@ export interface Visitor<M = {}> {
   visitFlowPredicate?(this: Context & M, path: NodePath<namedTypes.FlowPredicate>): any;
   visitInferredPredicate?(this: Context & M, path: NodePath<namedTypes.InferredPredicate>): any;
   visitDeclaredPredicate?(this: Context & M, path: NodePath<namedTypes.DeclaredPredicate>): any;
+  visitEnumDeclaration?(this: Context & M, path: NodePath<namedTypes.EnumDeclaration>): any;
+  visitEnumBody?(this: Context & M, path: NodePath<namedTypes.EnumBody>): any;
+  visitEnumBooleanBody?(this: Context & M, path: NodePath<namedTypes.EnumBooleanBody>): any;
+  visitEnumNumberBody?(this: Context & M, path: NodePath<namedTypes.EnumNumberBody>): any;
+  visitEnumStringBody?(this: Context & M, path: NodePath<namedTypes.EnumStringBody>): any;
+  visitEnumSymbolBody?(this: Context & M, path: NodePath<namedTypes.EnumSymbolBody>): any;
+  visitEnumMember?(this: Context & M, path: NodePath<namedTypes.EnumMember>): any;
+  visitEnumBooleanMember?(this: Context & M, path: NodePath<namedTypes.EnumBooleanMember>): any;
+  visitEnumNumberMember?(this: Context & M, path: NodePath<namedTypes.EnumNumberMember>): any;
+  visitEnumStringMember?(this: Context & M, path: NodePath<namedTypes.EnumStringMember>): any;
+  visitEnumDefaultedMember?(this: Context & M, path: NodePath<namedTypes.EnumDefaultedMember>): any;
+  visitBooleanLiteral?(this: Context & M, path: NodePath<namedTypes.BooleanLiteral>): any;
+  visitNumericLiteral?(this: Context & M, path: NodePath<namedTypes.NumericLiteral>): any;
+  visitStringLiteral?(this: Context & M, path: NodePath<namedTypes.StringLiteral>): any;
   visitExportDeclaration?(this: Context & M, path: NodePath<namedTypes.ExportDeclaration>): any;
   visitBlock?(this: Context & M, path: NodePath<namedTypes.Block>): any;
   visitLine?(this: Context & M, path: NodePath<namedTypes.Line>): any;
@@ -197,11 +214,8 @@ export interface Visitor<M = {}> {
   visitDirective?(this: Context & M, path: NodePath<namedTypes.Directive>): any;
   visitDirectiveLiteral?(this: Context & M, path: NodePath<namedTypes.DirectiveLiteral>): any;
   visitInterpreterDirective?(this: Context & M, path: NodePath<namedTypes.InterpreterDirective>): any;
-  visitStringLiteral?(this: Context & M, path: NodePath<namedTypes.StringLiteral>): any;
-  visitNumericLiteral?(this: Context & M, path: NodePath<namedTypes.NumericLiteral>): any;
   visitBigIntLiteral?(this: Context & M, path: NodePath<namedTypes.BigIntLiteral>): any;
   visitNullLiteral?(this: Context & M, path: NodePath<namedTypes.NullLiteral>): any;
-  visitBooleanLiteral?(this: Context & M, path: NodePath<namedTypes.BooleanLiteral>): any;
   visitRegExpLiteral?(this: Context & M, path: NodePath<namedTypes.RegExpLiteral>): any;
   visitObjectMethod?(this: Context & M, path: NodePath<namedTypes.ObjectMethod>): any;
   visitClassPrivateProperty?(this: Context & M, path: NodePath<namedTypes.ClassPrivateProperty>): any;
@@ -244,6 +258,7 @@ export interface Visitor<M = {}> {
   visitTSDeclareMethod?(this: Context & M, path: NodePath<namedTypes.TSDeclareMethod>): any;
   visitTSMappedType?(this: Context & M, path: NodePath<namedTypes.TSMappedType>): any;
   visitTSTupleType?(this: Context & M, path: NodePath<namedTypes.TSTupleType>): any;
+  visitTSNamedTupleMember?(this: Context & M, path: NodePath<namedTypes.TSNamedTupleMember>): any;
   visitTSRestType?(this: Context & M, path: NodePath<namedTypes.TSRestType>): any;
   visitTSOptionalType?(this: Context & M, path: NodePath<namedTypes.TSOptionalType>): any;
   visitTSIndexedAccessType?(this: Context & M, path: NodePath<namedTypes.TSIndexedAccessType>): any;
@@ -273,6 +288,4 @@ export interface Visitor<M = {}> {
   visitTSInterfaceBody?(this: Context & M, path: NodePath<namedTypes.TSInterfaceBody>): any;
   visitTSInterfaceDeclaration?(this: Context & M, path: NodePath<namedTypes.TSInterfaceDeclaration>): any;
   visitTSParameterProperty?(this: Context & M, path: NodePath<namedTypes.TSParameterProperty>): any;
-  visitOptionalMemberExpression?(this: Context & M, path: NodePath<namedTypes.OptionalMemberExpression>): any;
-  visitOptionalCallExpression?(this: Context & M, path: NodePath<namedTypes.OptionalCallExpression>): any;
 }

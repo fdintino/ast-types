@@ -1075,6 +1075,43 @@ export interface AwaitExpressionBuilder {
   ): namedTypes.AwaitExpression;
 }
 
+export interface OptionalMemberExpressionBuilder {
+  (
+    object: K.ExpressionKind,
+    property: K.IdentifierKind | K.ExpressionKind,
+    computed?: boolean,
+    optional?: boolean
+  ): namedTypes.OptionalMemberExpression;
+  from(
+    params: {
+      comments?: K.CommentKind[] | null,
+      computed?: boolean,
+      loc?: K.SourceLocationKind | null,
+      object: K.ExpressionKind,
+      optional?: boolean,
+      property: K.IdentifierKind | K.ExpressionKind
+    }
+  ): namedTypes.OptionalMemberExpression;
+}
+
+export interface OptionalCallExpressionBuilder {
+  (
+    callee: K.ExpressionKind,
+    argumentsParam: (K.ExpressionKind | K.SpreadElementKind)[],
+    optional?: boolean
+  ): namedTypes.OptionalCallExpression;
+  from(
+    params: {
+      arguments: (K.ExpressionKind | K.SpreadElementKind)[],
+      callee: K.ExpressionKind,
+      comments?: K.CommentKind[] | null,
+      loc?: K.SourceLocationKind | null,
+      optional?: boolean,
+      typeArguments?: null | K.TypeParameterInstantiationKind
+    }
+  ): namedTypes.OptionalCallExpression;
+}
+
 export interface ImportExpressionBuilder {
   (source: K.ExpressionKind): namedTypes.ImportExpression;
   from(
@@ -1506,6 +1543,16 @@ export interface NullTypeAnnotationBuilder {
       loc?: K.SourceLocationKind | null
     }
   ): namedTypes.NullTypeAnnotation;
+}
+
+export interface SymbolTypeAnnotationBuilder {
+  (): namedTypes.SymbolTypeAnnotation;
+  from(
+    params: {
+      comments?: K.CommentKind[] | null,
+      loc?: K.SourceLocationKind | null
+    }
+  ): namedTypes.SymbolTypeAnnotation;
 }
 
 export interface ThisTypeAnnotationBuilder {
@@ -2072,6 +2119,168 @@ export interface DeclaredPredicateBuilder {
   ): namedTypes.DeclaredPredicate;
 }
 
+export interface EnumDeclarationBuilder {
+  (
+    id: K.IdentifierKind,
+    body: K.EnumBooleanBodyKind | K.EnumNumberBodyKind | K.EnumStringBodyKind | K.EnumSymbolBodyKind
+  ): namedTypes.EnumDeclaration;
+  from(
+    params: {
+      body: K.EnumBooleanBodyKind | K.EnumNumberBodyKind | K.EnumStringBodyKind | K.EnumSymbolBodyKind,
+      comments?: K.CommentKind[] | null,
+      id: K.IdentifierKind,
+      loc?: K.SourceLocationKind | null
+    }
+  ): namedTypes.EnumDeclaration;
+}
+
+export interface EnumBooleanBodyBuilder {
+  (members: K.EnumBooleanMemberKind[], explicit: boolean): namedTypes.EnumBooleanBody;
+  from(
+    params: {
+      comments?: K.CommentKind[] | null,
+      explicit: boolean,
+      loc?: K.SourceLocationKind | null,
+      members: K.EnumBooleanMemberKind[]
+    }
+  ): namedTypes.EnumBooleanBody;
+}
+
+export interface EnumNumberBodyBuilder {
+  (members: K.EnumNumberMemberKind[], explicit: boolean): namedTypes.EnumNumberBody;
+  from(
+    params: {
+      comments?: K.CommentKind[] | null,
+      explicit: boolean,
+      loc?: K.SourceLocationKind | null,
+      members: K.EnumNumberMemberKind[]
+    }
+  ): namedTypes.EnumNumberBody;
+}
+
+export interface EnumStringBodyBuilder {
+  (
+    members: (K.EnumStringMemberKind | K.EnumDefaultedMemberKind)[],
+    explicit: boolean
+  ): namedTypes.EnumStringBody;
+  from(
+    params: {
+      comments?: K.CommentKind[] | null,
+      explicit: boolean,
+      loc?: K.SourceLocationKind | null,
+      members: (K.EnumStringMemberKind | K.EnumDefaultedMemberKind)[]
+    }
+  ): namedTypes.EnumStringBody;
+}
+
+export interface EnumSymbolBodyBuilder {
+  (members: K.EnumDefaultedMemberKind[]): namedTypes.EnumSymbolBody;
+  from(
+    params: {
+      comments?: K.CommentKind[] | null,
+      loc?: K.SourceLocationKind | null,
+      members: K.EnumDefaultedMemberKind[]
+    }
+  ): namedTypes.EnumSymbolBody;
+}
+
+export interface EnumBooleanMemberBuilder {
+  (id: K.IdentifierKind, init: K.BooleanLiteralKind): namedTypes.EnumBooleanMember;
+  from(
+    params: {
+      comments?: K.CommentKind[] | null,
+      id: K.IdentifierKind,
+      init: K.BooleanLiteralKind,
+      loc?: K.SourceLocationKind | null
+    }
+  ): namedTypes.EnumBooleanMember;
+}
+
+export interface EnumNumberMemberBuilder {
+  (id: K.IdentifierKind, init: K.NumericLiteralKind): namedTypes.EnumNumberMember;
+  from(
+    params: {
+      comments?: K.CommentKind[] | null,
+      id: K.IdentifierKind,
+      init: K.NumericLiteralKind,
+      loc?: K.SourceLocationKind | null
+    }
+  ): namedTypes.EnumNumberMember;
+}
+
+export interface EnumStringMemberBuilder {
+  (id: K.IdentifierKind, init: K.StringLiteralKind): namedTypes.EnumStringMember;
+  from(
+    params: {
+      comments?: K.CommentKind[] | null,
+      id: K.IdentifierKind,
+      init: K.StringLiteralKind,
+      loc?: K.SourceLocationKind | null
+    }
+  ): namedTypes.EnumStringMember;
+}
+
+export interface EnumDefaultedMemberBuilder {
+  (id: K.IdentifierKind): namedTypes.EnumDefaultedMember;
+  from(
+    params: {
+      comments?: K.CommentKind[] | null,
+      id: K.IdentifierKind,
+      loc?: K.SourceLocationKind | null
+    }
+  ): namedTypes.EnumDefaultedMember;
+}
+
+export interface BooleanLiteralBuilder {
+  (value: boolean): namedTypes.BooleanLiteral;
+  from(
+    params: {
+      comments?: K.CommentKind[] | null,
+      loc?: K.SourceLocationKind | null,
+      regex?: {
+        pattern: string,
+        flags: string
+      } | null,
+      value: boolean
+    }
+  ): namedTypes.BooleanLiteral;
+}
+
+export interface NumericLiteralBuilder {
+  (value: number): namedTypes.NumericLiteral;
+  from(
+    params: {
+      comments?: K.CommentKind[] | null,
+      extra?: {
+        rawValue: number,
+        raw: string
+      },
+      loc?: K.SourceLocationKind | null,
+      raw?: string | null,
+      regex?: {
+        pattern: string,
+        flags: string
+      } | null,
+      value: number
+    }
+  ): namedTypes.NumericLiteral;
+}
+
+export interface StringLiteralBuilder {
+  (value: string): namedTypes.StringLiteral;
+  from(
+    params: {
+      comments?: K.CommentKind[] | null,
+      loc?: K.SourceLocationKind | null,
+      regex?: {
+        pattern: string,
+        flags: string
+      } | null,
+      value: string
+    }
+  ): namedTypes.StringLiteral;
+}
+
 export interface ExportDeclarationBuilder {
   (
     defaultParam: boolean,
@@ -2311,41 +2520,6 @@ export interface InterpreterDirectiveBuilder {
   ): namedTypes.InterpreterDirective;
 }
 
-export interface StringLiteralBuilder {
-  (value: string): namedTypes.StringLiteral;
-  from(
-    params: {
-      comments?: K.CommentKind[] | null,
-      loc?: K.SourceLocationKind | null,
-      regex?: {
-        pattern: string,
-        flags: string
-      } | null,
-      value: string
-    }
-  ): namedTypes.StringLiteral;
-}
-
-export interface NumericLiteralBuilder {
-  (value: number): namedTypes.NumericLiteral;
-  from(
-    params: {
-      comments?: K.CommentKind[] | null,
-      extra?: {
-        rawValue: number,
-        raw: string
-      },
-      loc?: K.SourceLocationKind | null,
-      raw?: string | null,
-      regex?: {
-        pattern: string,
-        flags: string
-      } | null,
-      value: number
-    }
-  ): namedTypes.NumericLiteral;
-}
-
 export interface BigIntLiteralBuilder {
   (value: string | number): namedTypes.BigIntLiteral;
   from(
@@ -2378,21 +2552,6 @@ export interface NullLiteralBuilder {
       value?: null
     }
   ): namedTypes.NullLiteral;
-}
-
-export interface BooleanLiteralBuilder {
-  (value: boolean): namedTypes.BooleanLiteral;
-  from(
-    params: {
-      comments?: K.CommentKind[] | null,
-      loc?: K.SourceLocationKind | null,
-      regex?: {
-        pattern: string,
-        flags: string
-      } | null,
-      value: boolean
-    }
-  ): namedTypes.BooleanLiteral;
 }
 
 export interface RegExpLiteralBuilder {
@@ -2967,14 +3126,27 @@ export interface TSMappedTypeBuilder {
 }
 
 export interface TSTupleTypeBuilder {
-  (elementTypes: K.TSTypeKind[]): namedTypes.TSTupleType;
+  (elementTypes: (K.TSTypeKind | K.TSNamedTupleMemberKind)[]): namedTypes.TSTupleType;
   from(
     params: {
       comments?: K.CommentKind[] | null,
-      elementTypes: K.TSTypeKind[],
+      elementTypes: (K.TSTypeKind | K.TSNamedTupleMemberKind)[],
       loc?: K.SourceLocationKind | null
     }
   ): namedTypes.TSTupleType;
+}
+
+export interface TSNamedTupleMemberBuilder {
+  (label: K.IdentifierKind, elementType: K.TSTypeKind, optional?: boolean): namedTypes.TSNamedTupleMember;
+  from(
+    params: {
+      comments?: K.CommentKind[] | null,
+      elementType: K.TSTypeKind,
+      label: K.IdentifierKind,
+      loc?: K.SourceLocationKind | null,
+      optional?: boolean
+    }
+  ): namedTypes.TSNamedTupleMember;
 }
 
 export interface TSRestTypeBuilder {
@@ -3082,14 +3254,16 @@ export interface TSMethodSignatureBuilder {
 export interface TSTypePredicateBuilder {
   (
     parameterName: K.IdentifierKind | K.TSThisTypeKind,
-    typeAnnotation: K.TSTypeAnnotationKind
+    typeAnnotation?: K.TSTypeAnnotationKind | null,
+    asserts?: boolean
   ): namedTypes.TSTypePredicate;
   from(
     params: {
+      asserts?: boolean,
       comments?: K.CommentKind[] | null,
       loc?: K.SourceLocationKind | null,
       parameterName: K.IdentifierKind | K.TSThisTypeKind,
-      typeAnnotation: K.TSTypeAnnotationKind
+      typeAnnotation?: K.TSTypeAnnotationKind | null
     }
   ): namedTypes.TSTypePredicate;
 }
@@ -3344,43 +3518,6 @@ export interface TSParameterPropertyBuilder {
   ): namedTypes.TSParameterProperty;
 }
 
-export interface OptionalMemberExpressionBuilder {
-  (
-    object: K.ExpressionKind,
-    property: K.IdentifierKind | K.ExpressionKind,
-    computed?: boolean,
-    optional?: boolean
-  ): namedTypes.OptionalMemberExpression;
-  from(
-    params: {
-      comments?: K.CommentKind[] | null,
-      computed?: boolean,
-      loc?: K.SourceLocationKind | null,
-      object: K.ExpressionKind,
-      optional?: boolean,
-      property: K.IdentifierKind | K.ExpressionKind
-    }
-  ): namedTypes.OptionalMemberExpression;
-}
-
-export interface OptionalCallExpressionBuilder {
-  (
-    callee: K.ExpressionKind,
-    argumentsParam: (K.ExpressionKind | K.SpreadElementKind)[],
-    optional?: boolean
-  ): namedTypes.OptionalCallExpression;
-  from(
-    params: {
-      arguments: (K.ExpressionKind | K.SpreadElementKind)[],
-      callee: K.ExpressionKind,
-      comments?: K.CommentKind[] | null,
-      loc?: K.SourceLocationKind | null,
-      optional?: boolean,
-      typeArguments?: null | K.TypeParameterInstantiationKind
-    }
-  ): namedTypes.OptionalCallExpression;
-}
-
 export interface builders {
   file: FileBuilder;
   program: ProgramBuilder;
@@ -3455,6 +3592,8 @@ export interface builders {
   spreadProperty: SpreadPropertyBuilder;
   spreadPropertyPattern: SpreadPropertyPatternBuilder;
   awaitExpression: AwaitExpressionBuilder;
+  optionalMemberExpression: OptionalMemberExpressionBuilder;
+  optionalCallExpression: OptionalCallExpressionBuilder;
   importExpression: ImportExpressionBuilder;
   jsxAttribute: JSXAttributeBuilder;
   jsxIdentifier: JSXIdentifierBuilder;
@@ -3491,6 +3630,7 @@ export interface builders {
   nullableTypeAnnotation: NullableTypeAnnotationBuilder;
   nullLiteralTypeAnnotation: NullLiteralTypeAnnotationBuilder;
   nullTypeAnnotation: NullTypeAnnotationBuilder;
+  symbolTypeAnnotation: SymbolTypeAnnotationBuilder;
   thisTypeAnnotation: ThisTypeAnnotationBuilder;
   existsTypeAnnotation: ExistsTypeAnnotationBuilder;
   existentialTypeParam: ExistentialTypeParamBuilder;
@@ -3532,6 +3672,18 @@ export interface builders {
   declareExportAllDeclaration: DeclareExportAllDeclarationBuilder;
   inferredPredicate: InferredPredicateBuilder;
   declaredPredicate: DeclaredPredicateBuilder;
+  enumDeclaration: EnumDeclarationBuilder;
+  enumBooleanBody: EnumBooleanBodyBuilder;
+  enumNumberBody: EnumNumberBodyBuilder;
+  enumStringBody: EnumStringBodyBuilder;
+  enumSymbolBody: EnumSymbolBodyBuilder;
+  enumBooleanMember: EnumBooleanMemberBuilder;
+  enumNumberMember: EnumNumberMemberBuilder;
+  enumStringMember: EnumStringMemberBuilder;
+  enumDefaultedMember: EnumDefaultedMemberBuilder;
+  booleanLiteral: BooleanLiteralBuilder;
+  numericLiteral: NumericLiteralBuilder;
+  stringLiteral: StringLiteralBuilder;
   exportDeclaration: ExportDeclarationBuilder;
   block: BlockBuilder;
   line: LineBuilder;
@@ -3552,11 +3704,8 @@ export interface builders {
   directive: DirectiveBuilder;
   directiveLiteral: DirectiveLiteralBuilder;
   interpreterDirective: InterpreterDirectiveBuilder;
-  stringLiteral: StringLiteralBuilder;
-  numericLiteral: NumericLiteralBuilder;
   bigIntLiteral: BigIntLiteralBuilder;
   nullLiteral: NullLiteralBuilder;
-  booleanLiteral: BooleanLiteralBuilder;
   regExpLiteral: RegExpLiteralBuilder;
   objectMethod: ObjectMethodBuilder;
   classPrivateProperty: ClassPrivatePropertyBuilder;
@@ -3597,6 +3746,7 @@ export interface builders {
   tsDeclareMethod: TSDeclareMethodBuilder;
   tsMappedType: TSMappedTypeBuilder;
   tsTupleType: TSTupleTypeBuilder;
+  tsNamedTupleMember: TSNamedTupleMemberBuilder;
   tsRestType: TSRestTypeBuilder;
   tsOptionalType: TSOptionalTypeBuilder;
   tsIndexedAccessType: TSIndexedAccessTypeBuilder;
@@ -3623,7 +3773,5 @@ export interface builders {
   tsInterfaceBody: TSInterfaceBodyBuilder;
   tsInterfaceDeclaration: TSInterfaceDeclarationBuilder;
   tsParameterProperty: TSParameterPropertyBuilder;
-  optionalMemberExpression: OptionalMemberExpressionBuilder;
-  optionalCallExpression: OptionalCallExpressionBuilder;
   [builderName: string]: any;
 }

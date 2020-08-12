@@ -22,7 +22,7 @@ export interface AnyType {
   arrayOf(): AnyType;
 }
 
-abstract class BaseType<T> {
+export abstract class BaseType<T> {
   abstract toString(): string;
 
   abstract check(value: any, deep?: Deep): value is T;
@@ -41,7 +41,7 @@ abstract class BaseType<T> {
   }
 }
 
-class ArrayType<T> extends BaseType<T> {
+export class ArrayType<T> extends BaseType<T> {
   readonly kind: "ArrayType" = "ArrayType";
 
   constructor(
@@ -59,7 +59,7 @@ class ArrayType<T> extends BaseType<T> {
   }
 }
 
-class IdentityType<T> extends BaseType<T> {
+export class IdentityType<T> extends BaseType<T> {
   readonly kind: "IdentityType" = "IdentityType";
 
   constructor(
@@ -81,7 +81,7 @@ class IdentityType<T> extends BaseType<T> {
   }
 }
 
-class ObjectType<T> extends BaseType<T> {
+export class ObjectType<T> extends BaseType<T> {
   readonly kind: "ObjectType" = "ObjectType";
 
   constructor(
@@ -104,7 +104,7 @@ class ObjectType<T> extends BaseType<T> {
   }
 }
 
-class OrType<T> extends BaseType<T> {
+export class OrType<T> extends BaseType<T> {
   readonly kind: "OrType" = "OrType";
 
   constructor(
@@ -124,7 +124,7 @@ class OrType<T> extends BaseType<T> {
   }
 }
 
-class PredicateType<T> extends BaseType<T> {
+export class PredicateType<T> extends BaseType<T> {
   readonly kind: "PredicateType" = "PredicateType";
 
   constructor(
@@ -401,19 +401,24 @@ export default function typesPlugin(_fork: Fork) {
     null: typeof isNull;
     undefined: typeof isUndefined;
   };
-  var builtInTypes = {} as BuiltInTypes;
 
-  function defBuiltInType<T>(example: T, name: keyof BuiltInTypes): Type<T> {
-    const objStr = objToStr.call(example);
+  type BuiltInTypeTypes =
+    | string
+    | Function
+    | any[]
+    | { [key: string]: any }
+    | RegExp
+    | Date
+    | number
+    | boolean;
+
+  function defBuiltInType<T extends BuiltInTypeTypes>(example: T, name: keyof BuiltInTypes): Type<T> {
+    const objStr: string = objToStr.call(example);
 
     const type = new PredicateType<T>(name, value => objToStr.call(value) === objStr);
 
-    builtInTypes[name] = type;
-
-    if (example && typeof example.constructor === "function") {
-      builtInCtorFns.push(example.constructor);
-      builtInCtorTypes.push(type);
-    }
+    builtInCtorFns.push(example.constructor);
+    builtInCtorTypes.push(type);
 
     return type;
   }
@@ -430,8 +435,22 @@ export default function typesPlugin(_fork: Fork) {
   var isDate = defBuiltInType<Date>(new Date, "Date");
   var isNumber = defBuiltInType<number>(3, "number");
   var isBoolean = defBuiltInType<boolean>(true, "boolean");
-  var isNull = defBuiltInType<null>(null, "null");
-  var isUndefined = defBuiltInType<undefined>(void 0, "undefined");
+
+  var isNull = new PredicateType<null>("null", value => value === null);
+  var isUndefined = new PredicateType<undefined>("undefined", value => value === void 0);
+
+  const builtInTypes: BuiltInTypes = Object.freeze({
+    string: isString,
+    function: isFunction,
+    array: isArray,
+    object: isObject,
+    RegExp: isRegExp,
+    Date: isDate,
+    number: isNumber,
+    boolean: isBoolean,
+    null: isNull,
+    undefined: isUndefined,
+  });
 
   // In order to return the same Def instance every time Type.def is called
   // with a particular name, those instances need to be stored in a cache.
